@@ -11,6 +11,7 @@ object frmMain: TfrmMain
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnShow = FormShow
   DesignSize = (
     641
     652)
@@ -42,5 +43,14 @@ object frmMain: TfrmMain
     Caption = 'btnSums'
     TabOrder = 2
     OnClick = btnSumsClick
+  end
+  object btnMuls: TButton
+    Left = 8
+    Top = 78
+    Width = 105
+    Height = 25
+    Caption = 'btnMuls'
+    TabOrder = 3
+    OnClick = btnMulsClick
   end
 end

@@ -22,10 +22,14 @@ type
     btnSimpleNumber: TButton;
     memOut: TMemo;
     btnSums: TButton;
+    btnMuls: TButton;
     procedure btnSimpleNumberClick(Sender: TObject);
     procedure btnSumsClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnMulsClick(Sender: TObject);
   private
     { Private declarations }
+    Showed: boolean;
     arSN:array[1..25] of integer;
     countSN: Integer;
     arSums, arMuls: TAValues;
@@ -83,6 +87,7 @@ var
   i: Integer;
   found: Boolean;
 begin
+  if sum >= 100 then exit;
   // проверяем есть ли оно в массиве уже
   // если есть добавляем пару
   // если нет добавляем и значение и пару
@@ -143,8 +148,37 @@ begin
 end;
 
 procedure TfrmMain.AddMulValue(val1, val2, mul: Integer);
+var
+  i: Integer;
+  found: Boolean;
 begin
+  // проверяем есть ли оно в массиве уже
+  // если есть добавляем пару
+  // если нет добавляем и значение и пару
 
+  // предполагаем что произведения нет
+  found := false;
+  for i := 1 to mulCount do begin
+    if arMuls[i].val = mul then begin
+      // произведение есть есть. добавляем пару усди ее нет
+      found := true;
+      if not ThereArePair(val1,val2,arMuls[i]) then begin
+        inc(arMuls[i].cPairs);
+        arMuls[i].arPairs[arMuls[i].cPairs].n1:=val1;
+        arMuls[i].arPairs[arMuls[i].cPairs].n2:=val2;
+      end;
+      exit;
+    end
+  end;
+  if not found then begin
+    // произведения нет. добавляем и значение и пару
+    inc(mulCount);
+    i:=mulCount;
+    arMuls[i].val := mul;
+    inc(arMuls[i].cPairs);
+    arMuls[i].arPairs[arMuls[i].cPairs].n1:=val1;
+    arMuls[i].arPairs[arMuls[i].cPairs].n2:=val2;
+  end;
 end;
 
 procedure TfrmMain.btnSumsClick(Sender: TObject);
@@ -152,7 +186,6 @@ var
   i, j: Integer;
 begin
   sumCount:=0;
-  mulCount:=0;
   for i := 2 to 99 do
     for j := 2 to 99 do begin
       if i <> j then begin
@@ -167,6 +200,12 @@ begin
   ShowSumsValues();
 end;
 
+procedure TfrmMain.FormShow(Sender: TObject);
+begin
+  if Showed then exit;
+  btnSimpleNumberClick(btnSimpleNumber);
+end;
+
 procedure TfrmMain.ShowArSimpleNum();
 var
   s: String;
@@ -178,6 +217,24 @@ begin
   end;
   s:= s + IntToStr(arSN[i])+ ')';
   memOut.Lines.Add(s);
+end;
+
+procedure TfrmMain.btnMulsClick(Sender: TObject);
+var
+  i, j: Integer;
+begin
+  mulCount:=0;
+  for i := 2 to 99 do
+    for j := 2 to 99 do begin
+      if i <> j then begin
+        // numbers not equ
+        if not (SimpleNum(i) and SimpleNum(j))  then begin
+          // добавляем если хотя бы одно на простое
+          AddMulValue(i, j, i*j);
+        end;
+      end;
+    end;
+  ShowMulsValues();
 end;
 
 procedure TfrmMain.btnSimpleNumberClick(Sender: TObject);
