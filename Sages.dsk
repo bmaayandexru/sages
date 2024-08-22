@@ -68,9 +68,9 @@ WelcomePageURL=bds:/default.htm
 [View1]
 CustomEditViewType=TEditView
 Module=D:\bma\Documents\Embarcadero\Sages\UfrmMain.pas
-CursorX=24
-CursorY=142
-TopLine=106
+CursorX=109
+CursorY=210
+TopLine=187
 LeftCol=1
 Elisions=
 Bookmarks=
@@ -264,8 +264,8 @@ SplitPos=111
 
 [PropInspDesignerSelection]
 ArrangeBy=Name
-SelectedItem=Name,
-ExpandedItems=Anchors=1,BorderIcons=0,Constraints=0,Font=0,GlassFrame=0,HorzScrollBar=0,LiveBindings=0,"LiveBindings Designer=0",Margins=0,ImageMargins=0,BevelEdges=0,StyleElements=0,Touch=0
+SelectedItem=Name,Action
+ExpandedItems=Anchors=0,BorderIcons=0,Constraints=0,LiveBindings=0,Font=0,ImageMargins=0,"LiveBindings Designer=0",Margins=0
 
 [ClassBrowserTool]
 PercentageSizes=1

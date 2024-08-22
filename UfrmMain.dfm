@@ -11,6 +11,7 @@ object frmMain: TfrmMain
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
+  OnShow = FormShow
   DesignSize = (
     641
     652)
@@ -33,6 +34,7 @@ object frmMain: TfrmMain
     Anchors = [akLeft, akTop, akRight, akBottom]
     ScrollBars = ssVertical
     TabOrder = 1
+    OnDblClick = memOutDblClick
   end
   object btnSums: TButton
     Left = 8
@@ -42,5 +44,14 @@ object frmMain: TfrmMain
     Caption = 'btnSums'
     TabOrder = 2
     OnClick = btnSumsClick
+  end
+  object btnClearSSsum: TButton
+    Left = 8
+    Top = 88
+    Width = 105
+    Height = 25
+    Caption = 'btnClearSSsum'
+    TabOrder = 3
+    OnClick = btnClearSSsumClick
   end
 end

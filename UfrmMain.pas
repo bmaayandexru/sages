@@ -22,10 +22,15 @@ type
     btnSimpleNumber: TButton;
     memOut: TMemo;
     btnSums: TButton;
+    btnClearSSsum: TButton;
     procedure btnSimpleNumberClick(Sender: TObject);
     procedure btnSumsClick(Sender: TObject);
+    procedure FormShow(Sender: TObject);
+    procedure btnClearSSsumClick(Sender: TObject);
+    procedure memOutDblClick(Sender: TObject);
   private
     { Private declarations }
+    Showed : boolean;
     arSN:array[1..25] of integer;
     countSN: Integer;
     arSums, arMuls: TAValues;
@@ -38,6 +43,7 @@ type
 
     procedure ShowSumsValues;
     procedure ShowMulsValues;
+    function CheckSS(v: TValue): Boolean;
   public
     { Public declarations }
   end;
@@ -118,11 +124,13 @@ var
   s: String;
 begin
   for i:=1 to sumCount do begin
-    s:='(sum: '+IntToStr(arSums[i].val)+' pairs';
-    for j := 1 to arSums[i].cPairs do
-      s:=s + format('(%d,%d)',[arSums[i].arPairs[j].n1,arSums[i].arPairs[j].n2]);
-    s:=s+')';
-    memOut.Lines.Add(s);
+    if arSums[i].val <> 0 then begin
+      s:='(sum: '+IntToStr(arSums[i].val)+' pairs';
+      for j := 1 to arSums[i].cPairs do
+        s:=s + format('(%d,%d)',[arSums[i].arPairs[j].n1,arSums[i].arPairs[j].n2]);
+      s:=s+')';
+      memOut.Lines.Add(s);
+    end;
   end;
   memOut.Lines.Add('sum count '+IntToStr(sumCount));
 end;
@@ -155,9 +163,11 @@ begin
   mulCount:=0;
   for i := 2 to 99 do
     for j := 2 to 99 do begin
-      if i <> j then begin
+//      if i <> j then begin
+      if true then begin
         // numbers not equ
-        if not (SimpleNum(i) and SimpleNum(j))  then begin
+//        if not (SimpleNum(i) and SimpleNum(j))  then begin
+        if true  then begin
           // добавляем если хотя бы одно на простое
           AddSumValue(i, j, i+j);
           // AddMulValue(i, j, i*j);
@@ -165,6 +175,17 @@ begin
       end;
     end;
   ShowSumsValues();
+end;
+
+procedure TfrmMain.FormShow(Sender: TObject);
+begin
+  if Showed then exit;
+  btnSimpleNumberClick(btnSimpleNumber);
+end;
+
+procedure TfrmMain.memOutDblClick(Sender: TObject);
+begin
+  memOut.Clear;
 end;
 
 procedure TfrmMain.ShowArSimpleNum();
@@ -178,6 +199,32 @@ begin
   end;
   s:= s + IntToStr(arSN[i])+ ')';
   memOut.Lines.Add(s);
+end;
+
+function TfrmMain.CheckSS(v:TValue): Boolean;
+var
+  i: Integer;
+begin
+  Result:=false;
+  for i := 1 to v.cPairs do begin
+    if (SimpleNum(v.arPairs[i].n1) and SimpleNum(v.arPairs[i].n2))or(v.arPairs[i].n1 + v.arPairs[i].n2 > 100) then begin
+      Result :=true;
+      exit;
+    end;
+  end;
+end;
+
+procedure TfrmMain.btnClearSSsumClick(Sender: TObject);
+var
+  i, j: Integer;
+begin
+  for i := 1 to sumCount do begin
+    if CheckSS(arSums[i]) then begin
+      // исключаем если находим хотя бы одну пару простых чисел
+      arSums[i].val := 0;
+    end;
+  end;
+  ShowSumsValues();
 end;
 
 procedure TfrmMain.btnSimpleNumberClick(Sender: TObject);
