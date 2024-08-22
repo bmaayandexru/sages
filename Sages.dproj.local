@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <BorlandProject>
 	<Transactions>
+    <Transaction>1899.12.30 00:00:00.000.737,D:\bma\Documents\Unit1.dfm=D:\bma\Documents\Embarcadero\Sages\UfrmMain.dfm</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.974,D:\bma\Documents\Project1.dproj=D:\bma\Documents\Embarcadero\Sages\Sages.dproj</Transaction>
+    <Transaction>1899.12.30 00:00:00.000.737,D:\bma\Documents\Unit1.pas=D:\bma\Documents\Embarcadero\Sages\UfrmMain.pas</Transaction>
     <Transaction>1899.12.30 00:00:00.000.827,=D:\bma\Documents\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.737,D:\bma\Documents\Embarcadero\Sages\UfrmMain.pas=D:\bma\Documents\Unit1.pas</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.974,D:\bma\Documents\Embarcadero\Sages\Sages.dproj=D:\bma\Documents\Project1.dproj</Transaction>
-    <Transaction>1899.12.30 00:00:00.000.737,D:\bma\Documents\Embarcadero\Sages\UfrmMain.dfm=D:\bma\Documents\Unit1.dfm</Transaction>
   </Transactions>
 </BorlandProject>

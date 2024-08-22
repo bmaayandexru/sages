@@ -54,4 +54,13 @@ object frmMain: TfrmMain
     TabOrder = 3
     OnClick = btnClearSSsumClick
   end
+  object btnClrSumsByMul: TButton
+    Left = 8
+    Top = 136
+    Width = 105
+    Height = 25
+    Caption = 'btnClrSumsByMul'
+    TabOrder = 4
+    OnClick = btnClrSumsByMulClick
+  end
 end

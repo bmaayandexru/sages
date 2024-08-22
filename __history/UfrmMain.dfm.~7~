@@ -45,6 +45,7 @@ object frmMain: TfrmMain
     TabOrder = 2
     OnClick = btnSumsClick
   end
+<<<<<<< HEAD
   object btnClearSSsum: TButton
     Left = 8
     Top = 88
@@ -53,14 +54,15 @@ object frmMain: TfrmMain
     Caption = 'btnClearSSsum'
     TabOrder = 3
     OnClick = btnClearSSsumClick
-  end
-  object btnClrSumsByMul: TButton
+=======
+  object btnMuls: TButton
     Left = 8
-    Top = 136
+    Top = 78
     Width = 105
     Height = 25
-    Caption = 'btnClrSumsByMul'
-    TabOrder = 4
-    OnClick = btnClrSumsByMulClick
+    Caption = 'btnMuls'
+    TabOrder = 3
+    OnClick = btnMulsClick
+>>>>>>> 9f07582fdb4a002709f1bba639b12cc5ebdfef4a
   end
 end

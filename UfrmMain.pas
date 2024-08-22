@@ -23,11 +23,13 @@ type
     memOut: TMemo;
     btnSums: TButton;
     btnClearSSsum: TButton;
+    btnClrSumsByMul: TButton;
     procedure btnSimpleNumberClick(Sender: TObject);
     procedure btnSumsClick(Sender: TObject);
     procedure FormShow(Sender: TObject);
     procedure btnClearSSsumClick(Sender: TObject);
     procedure memOutDblClick(Sender: TObject);
+    procedure btnClrSumsByMulClick(Sender: TObject);
   private
     { Private declarations }
     Showed : boolean;
@@ -44,6 +46,9 @@ type
     procedure ShowSumsValues;
     procedure ShowMulsValues;
     function CheckSS(v: TValue): Boolean;
+    procedure AddMul(n1, n2: Integer);
+    procedure AddMuls(sum: TValue);
+    procedure ShowSumsValuesMuls;
   public
     { Public declarations }
   end;
@@ -135,6 +140,24 @@ begin
   memOut.Lines.Add('sum count '+IntToStr(sumCount));
 end;
 
+procedure TfrmMain.ShowSumsValuesMuls();
+var
+  i, j: Integer;
+  s: String;
+begin
+  for i:=1 to sumCount do begin
+    if arSums[i].val <> 0 then begin
+      s:='(sum: '+IntToStr(arSums[i].val)+' pMul';
+      for j := 1 to arSums[i].cPairs do
+        if arSums[i].arPairs[j].n1*arSums[i].arPairs[j].n2 <> 0 then
+          s:=s + format('(%d)',[arSums[i].arPairs[j].n1*arSums[i].arPairs[j].n2]);
+      s:=s+')';
+      memOut.Lines.Add(s);
+    end;
+  end;
+  memOut.Lines.Add('sum count '+IntToStr(sumCount));
+end;
+
 procedure TfrmMain.ShowMulsValues();
 var
   i, j: Integer;
@@ -207,7 +230,8 @@ var
 begin
   Result:=false;
   for i := 1 to v.cPairs do begin
-    if (SimpleNum(v.arPairs[i].n1) and SimpleNum(v.arPairs[i].n2))or(v.arPairs[i].n1 + v.arPairs[i].n2 > 100) then begin
+//    if (SimpleNum(v.arPairs[i].n1) and SimpleNum(v.arPairs[i].n2))or(v.arPairs[i].n1 + v.arPairs[i].n2 > 100) then begin
+    if (SimpleNum(v.arPairs[i].n1) and SimpleNum(v.arPairs[i].n2)) then begin
       Result :=true;
       exit;
     end;
@@ -225,6 +249,85 @@ begin
     end;
   end;
   ShowSumsValues();
+  ShowSumsValuesMuls();
+end;
+
+procedure TfrmMain.AddMul(n1,n2: Integer);
+var
+  i: Integer;
+  found: Boolean;
+begin
+  found := false; // предполагаем что произведения нет
+  for i := 1 to mulCount do begin
+    if arMuls[i].val = n1*n2 then begin
+      // можно проверить есть ли пара уже в списке!!!!!!!!!!!!!! пока не делаем
+      // добавляем в список пар
+      inc(arMuls[i].cPairs);
+      arMuls[i].arPairs[arMuls[i].cPairs].n1 := n1;
+      arMuls[i].arPairs[arMuls[i].cPairs].n2 := n2;
+      found := true;
+      break;
+    end;
+  end;
+  if not found then begin
+    // произведения нет в списке
+    inc(mulCount);
+    arMuls[mulCount].val := n1*n2;
+    inc(arMuls[mulCount].cPairs);
+    arMuls[mulCount].arPairs[arMuls[mulCount].cPairs].n1 := n1;
+    arMuls[mulCount].arPairs[arMuls[mulCount].cPairs].n2 := n2;
+  end;
+end;
+
+procedure TfrmMain.AddMuls(sum:TValue);
+var
+  i: Integer;
+begin
+  //добавляем пары из списка пар текущей суммы в список произведение
+  for i := 1 to sum.cPairs do begin
+    AddMul(sum.arPairs[i].n1,sum.arPairs[i].n2);
+  end;
+end;
+
+procedure TfrmMain.btnClrSumsByMulClick(Sender: TObject);
+var
+  i, ii, j, k: Integer;
+  mulval: integer;
+  found: Boolean;
+begin
+  // множество произведений из слагаемых оставшихся сумм
+  // стираем пару если находим произведение в других списках
+  // в других спиках тоже стрираем пары которе дают тоже произведение
+  for i := 1 to sumCount do begin
+    if arSums[i].val <> 0 then begin
+      // сумма в списке
+      // проходим по списку пар данной суммы и ищем произведение каждой пары
+      // в списках произведений пар других сумм
+      for ii := 1 to arSums[i].cPairs do
+        if arSums[i].arPairs[ii].n1 * arSums[i].arPairs[ii].n2 <> 0 then begin
+          mulval := arSums[i].arPairs[ii].n1 * arSums[i].arPairs[ii].n2;
+          found:=false;
+          for j := 1 to sumCount do begin
+            if (arSums[j].val <> 0)and(i<>j) then begin
+              // ищем sval во всех других множествах и обнуляем пары с таким же произведением
+              for k := 1 to arSums[j].cPairs do begin
+                if arSums[j].arPairs[k].n1*arSums[j].arPairs[k].n2 = mulval then begin
+                  arSums[j].arPairs[k].n1 := 0;
+                  arSums[j].arPairs[k].n2 := 0;
+                  found:=true;
+                end;
+              end;
+            end;
+          end;
+          // если были найдены дубликаты произведения то обнуляем и саму пару
+          if found then begin
+            arSums[i].arPairs[ii].n1 := 0;
+            arSums[i].arPairs[ii].n2 := 0;
+          end;
+        end;
+    end;
+  end;
+  ShowSumsValuesMuls;
 end;
 
 procedure TfrmMain.btnSimpleNumberClick(Sender: TObject);
